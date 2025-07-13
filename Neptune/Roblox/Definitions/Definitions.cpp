@@ -2,7 +2,7 @@
 
 uintptr_t RobloxInstance::GetDataModel()
 {
-    uintptr_t fakeDatamodel = Memory::ReadMemory<uintptr_t>(Offsets::Datamodel::FakeDatamodel);
+    uintptr_t fakeDatamodel = Memory::ReadMemory<uintptr_t>(Globals::moduleBaseAddress + Offsets::Datamodel::FakeDatamodel);
     uintptr_t datamodel = Memory::ReadMemory<uintptr_t>(fakeDatamodel + Offsets::Datamodel::FakeDatamodelToDatamodel);
 
     return datamodel;
@@ -10,8 +10,7 @@ uintptr_t RobloxInstance::GetDataModel()
 
 uintptr_t RobloxInstance::GetVisualEngine()
 {
-    uintptr_t visualEngine = Memory::ReadMemory<uintptr_t>(Offsets::VisualEngine::VisualEngine);
-
+    uintptr_t visualEngine = Memory::ReadMemory<uintptr_t>(Globals::moduleBaseAddress + Offsets::VisualEngine::VisualEngine);
     return visualEngine;
 }
 

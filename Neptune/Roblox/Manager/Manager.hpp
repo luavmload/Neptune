@@ -15,6 +15,6 @@ public:
 
 	static DWORD GetProcessId(const wchar_t* processName);
 
-	static uintptr_t GetModuleBaseAddress(DWORD processId, const wchar_t* moduleName);
+	static uintptr_t GetModuleBaseAddress(DWORD processId, std::string moduleName);
 };
 

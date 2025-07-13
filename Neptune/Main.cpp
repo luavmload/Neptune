@@ -38,7 +38,7 @@ int main()
 			return 1;
 	}
 
-	Globals::moduleBaseAddress = Manager::GetModuleBaseAddress(Manager::GetProcessId(L"RobloxPlayerBeta.exe"), L"RobloxPlayerBeta.exe");
+	Globals::moduleBaseAddress = Manager::GetModuleBaseAddress(processId, "RobloxPlayerBeta.exe");
 
 	std::cout << "Successfully attached to Roblox process with PID: " << processId << std::endl;
 
@@ -79,10 +79,7 @@ int main()
 			<< headPosition.z << ")" << std::endl;
 	}*/
 
-	//Overlay::InitializeOverlay();
-
-	std::cout << "Base: 0x" << std::hex << Manager::GetModuleBaseAddress(Manager::GetProcessId(L"RobloxPlayerBeta.exe"), L"RobloxPlayerBeta.exe") << std::endl;
-	std::cout << "Visual Engine: 0x" << std::hex << RobloxInstance::GetVisualEngine() << std::endl;
+	Overlay::InitializeOverlay();
 
 	CloseHandle(Globals::processHandle);
 

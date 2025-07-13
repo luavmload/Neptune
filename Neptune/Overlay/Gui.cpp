@@ -13,7 +13,20 @@ void Overlay::DrawGui()
 	{
 		static bool showConsole = true;
 
+		ImGui::Toggle("Localplayer Check", &Globals::localplayerCheck);
+
+		ImGui::Separator();
+
 		ImGui::Toggle("ESP", &Globals::espEnabled);
+		ImGui::ColorEdit4("Box Color", Globals::colorDummy, ImGuiColorEditFlags_NoInputs);
+		ImGui::ColorEdit4("Fill Color", Globals::fillColor, ImGuiColorEditFlags_NoInputs);
+		
+		ImGui::Separator();
+
+		ImGui::Toggle("Tracers", &Globals::tracersEnabled);
+		ImGui::ColorEdit4("Tracers Color", Globals::tracersColor, ImGuiColorEditFlags_NoInputs);
+
+		ImGui::Separator();
 
 		if (ImGui::Toggle("Console Visible", &showConsole))
 		{
@@ -22,20 +35,12 @@ void Overlay::DrawGui()
 			else 
 				::ShowWindow(::GetConsoleWindow(), SW_HIDE);
 		}
-
-		ImGui::Text(Globals::espEnabled ? "True" : "False");
-
-		ImGui::ColorEdit4("Box Color", Globals::colorDummy, ImGuiColorEditFlags_NoInputs);
-		ImGui::ColorEdit4("Fill Color", Globals::colorDummy, ImGuiColorEditFlags_NoInputs);
 	}
 	ImGui::End();
 }
 
 void Overlay::DrawEsp()
 {
-	if (!Globals::espEnabled)
-		return;
-
 	uintptr_t datamodel = RobloxInstance::GetDataModel();
 
 	uintptr_t players = RobloxInstance::FindFirstChild(RobloxInstance::GetChildren(datamodel), "Players");
@@ -49,10 +54,7 @@ void Overlay::DrawEsp()
 		if (childAddress == 0)
 			break; // Couldn't find any children
 
-		//if (childAddress == localPlayer) 
-		//	continue;
-
-		if (childAddress != localPlayer)
+		if (childAddress == localPlayer && Globals::localplayerCheck) 
 			continue;
 
 		ESP::DrawEspForPlayer(childAddress, ImColor(0, 0, 0));

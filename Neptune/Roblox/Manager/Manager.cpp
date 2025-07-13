@@ -39,27 +39,33 @@ DWORD Manager::GetProcessId(const wchar_t* processName)
 	return 0;
 }
 
-uintptr_t Manager::GetModuleBaseAddress(DWORD processId, const wchar_t* moduleName)
+uintptr_t Manager::GetModuleBaseAddress(DWORD processId, std::string moduleName) // i made this cuz im pro
 {
-	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, processId);
-	if (snapshot == INVALID_HANDLE_VALUE) {
-		std::cerr << "Failed to create snapshot of modules." << std::endl;
-		return 0;
+	MODULEENTRY32 modEntry = { 0 };
+	modEntry.dwSize = sizeof(MODULEENTRY32);
+
+	HANDLE hModuleSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, processId);
+	if (hModuleSnap == INVALID_HANDLE_VALUE)
+	{
+		return {};
 	}
 
-	MODULEENTRY32W moduleEntry;
-	moduleEntry.dwSize = sizeof(MODULEENTRY32W);
-	if (Module32FirstW(snapshot, &moduleEntry)) {
-		do {
-			if (wcscmp(moduleEntry.szModule, moduleName) == 0) {
-				CloseHandle(snapshot);
-				return reinterpret_cast<uintptr_t>(moduleEntry.modBaseAddr);
+	if (Module32First(hModuleSnap, &modEntry))
+	{
+		do
+		{
+#ifdef UNICODE
+			if (_wcsicmp(modEntry.szModule, std::wstring(moduleName.begin(), moduleName.end()).c_str()) == 0)
+#else
+			if (_stricmp(modEntry.szModule, moduleName.c_str()) == 0)
+#endif
+			{
+				CloseHandle(hModuleSnap);
+				return (uintptr_t)modEntry.modBaseAddr;
 			}
-		} while (Module32NextW(snapshot, &moduleEntry));
+		} while (Module32Next(hModuleSnap, &modEntry));
 	}
 
-	CloseHandle(snapshot);
-
-	std::wcerr << L"Module not found: " << moduleName << std::endl;
-	return 0;
+	CloseHandle(hModuleSnap);
+	return {};
 }
