@@ -1,10 +1,5 @@
 #pragma once
 
-#include "../Manager/Manager.hpp"
-#include "../../Globals.hpp"
-
-#define REBASE(x) x + Globals::moduleBaseAddress;//Globals::moduleBaseAddress; 
-
 namespace Offsets
 {
 	namespace General
@@ -20,7 +15,7 @@ namespace Offsets
 
 	namespace Datamodel
 	{
-		const uintptr_t FakeDatamodel = /*REBASE*/(0x682B928);
+		const uintptr_t FakeDatamodel = 0x682B928;
 
 		const uintptr_t FakeDatamodelToDatamodel = 0x1B8;
 
@@ -29,7 +24,7 @@ namespace Offsets
 
 	namespace VisualEngine
 	{
-		const uintptr_t VisualEngine =/*REBASE*/(0x66712A8);
+		const uintptr_t VisualEngine = 0x66712A8;
 
 		const uintptr_t Dimensions = 0x720;
 		const uintptr_t ViewMatrix = 0x4B0;

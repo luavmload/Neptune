@@ -48,6 +48,9 @@ void Overlay::InitializeOverlay()
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
+    io.IniFilename = NULL;
+    io.LogFilename = NULL;
+
     ImGui::StyleColorsDark();
 
     ImGui_ImplWin32_Init(hwnd);
